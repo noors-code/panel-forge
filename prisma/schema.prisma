@@ -1,0 +1,16 @@
+// PanelForge schema. The webtoon feature is currently stateless (in-memory);
+// this Ping model keeps Prisma + the first migration valid and proves the DB
+// connection in /health. Persisting episodes is a planned next slice.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Ping {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+}

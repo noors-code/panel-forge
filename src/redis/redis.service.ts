@@ -1,0 +1,15 @@
+import { Injectable, OnModuleDestroy } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import Redis from 'ioredis';
+
+// One shared Redis connection, injected wherever we need cache/pubsub/geo later.
+@Injectable()
+export class RedisService extends Redis implements OnModuleDestroy {
+  constructor(config: ConfigService) {
+    super(config.get<string>('REDIS_URL') ?? 'redis://localhost:6381');
+  }
+
+  onModuleDestroy() {
+    this.disconnect();
+  }
+}
